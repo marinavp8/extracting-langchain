@@ -1,12 +1,12 @@
 from langchain.chat_models import  ChatOpenAI 
 from langchain.chains import  create_extraction_chain 
-import constants
+
 
 import os 
+from dotenv import load_dotenv
 
-
-os.environ["OPENAI_API_KEY"] = constants.OPENAI_API_KEY
-
+load_dotenv()
+OPENAI = os.environ.get("OPENAI_API_KEY")
 
 description_text = """
 MacBook Pro M2 Max takes its power and efficiency further than ever.
@@ -31,7 +31,7 @@ schema = {
 
 def extract_specs_from_description(description_text):
     llm = ChatOpenAI(temperature=0, model="gpt-3.5-turbo",
-                     openai_api_key=os.getenv("OPENAI_API_KEY"))
+                     openai_api_key=OPENAI)
     chain = create_extraction_chain(schema, llm)
     return chain.run(description_text)
 
